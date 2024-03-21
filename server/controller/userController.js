@@ -117,3 +117,25 @@ exports.activateUser = catchAsync(async (req, res, next) => {
     return next(new AppError(error.message, 500));
   }
 });
+
+exports.loginUser = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new AppError("Please provide email and password!", 400));
+  }
+
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user) {
+    return next(
+      new AppError("There is no account registered with this email", 400)
+    );
+  }
+
+  if (!user || !(await user.comparePassword(password, user.password))) {
+    return next(new AppError("Incorrect email or password", 401));
+  }
+
+  sendToken(user, 200, res);
+});
