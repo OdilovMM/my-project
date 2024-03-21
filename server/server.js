@@ -13,12 +13,7 @@ dotenv.config({ path: "./config.env" });
 const DB = process.env.MONGO_URL;
 
 mongoose
-  .connect(DB, {
-    useNewUrlParser: true,
-    // useCreateIndex: true,
-    // useFindAndModify: false,
-    // useUnifiedTopology: true
-  })
+  .connect(DB)
   .then(() => console.log("DB connection successful"));
 
 const port = process.env.PORT || 3000;

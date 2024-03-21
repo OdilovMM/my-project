@@ -7,11 +7,14 @@ import axios from "axios";
 import { server } from "../../server";
 
 const Signup = () => {
+  const [userName, setIsUserName] = useState("");
+  const [firstName, setIsFirstName] = useState("");
+  const [lastName, setIsLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [visible, setVisible] = useState(false);
   const [avatar, setAvatar] = useState(null);
+
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
 
   const handleFileInputChange = (e) => {
@@ -24,8 +27,11 @@ const Signup = () => {
     const config = { headers: { "Content-Type": "multipart/form-data" } };
     const newForm = new FormData();
 
+    // newForm.append("userName", userName);
+    newForm.append("userName", userName.toString());
+    newForm.append("firstName", firstName);
+    newForm.append("lastName", lastName);
     newForm.append("file", avatar);
-    newForm.append("name", name);
     newForm.append("email", email);
     newForm.append("password", password);
 
@@ -36,16 +42,20 @@ const Signup = () => {
         config
       );
 
+      setIsUserName("");
+      setIsFirstName("");
+      setIsLastName("");
       setEmail("");
-      setName("");
       setPassword("");
       setAvatar(null);
 
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
-    } catch (err) {
-      console.log(err);
+
+      // setTimeout(() => {
+      //   navigate("/login");
+      // }, 3000);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
     }
   };
 
@@ -61,19 +71,57 @@ const Signup = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label
-                htmlFor="email"
+                htmlFor="userName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Full Name
+                Username
               </label>
               <div className="mt-1">
                 <input
                   type="text"
-                  name="text"
-                  autoComplete="name"
+                  name="userName"
+                  autoComplete="userName"
                   required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={userName}
+                  onChange={(e) => setIsUserName(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                First Name
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  name="firstName"
+                  autoComplete="firstName"
+                  required
+                  value={firstName}
+                  onChange={(e) => setIsFirstName(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Last Name
+              </label>
+              <div className="mt-1">
+                <input
+                  type="text"
+                  name="lastName"
+                  autoComplete="lastName"
+                  required
+                  value={lastName}
+                  onChange={(e) => setIsLastName(e.target.value)}
                   className="appearance-none block w-full px-3 py-2 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 />
               </div>
@@ -99,7 +147,7 @@ const Signup = () => {
             </div>
             <div>
               <label
-                htmlFor="email"
+                htmlFor="password"
                 className="block text-sm font-medium text-gray-700"
               >
                 Password
