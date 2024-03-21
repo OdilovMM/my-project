@@ -5,6 +5,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../../server";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [userName, setIsUserName] = useState("");
@@ -49,11 +50,14 @@ const Signup = () => {
       setPassword("");
       setAvatar(null);
 
+      toast.success(response.data.message);
+      console.log(response)
 
       // setTimeout(() => {
       //   navigate("/login");
       // }, 3000);
     } catch (error) {
+      toast.error(error.response.data.message);
       console.log(error);
       console.log(error.response.data.message);
     }

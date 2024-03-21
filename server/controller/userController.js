@@ -72,7 +72,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
       });
       res.status(201).json({
         success: "success",
-        message: `Please check your email: ${user.email} to activate your account!`,
+        message: `Please check your email: ${user.email}!`,
       });
     } catch (error) {
       return next(new AppError(error.message, 500));
