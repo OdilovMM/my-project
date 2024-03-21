@@ -12,9 +12,7 @@ dotenv.config({ path: "./config.env" });
 
 const DB = process.env.MONGO_URL;
 
-mongoose
-  .connect(DB)
-  .then(() => console.log("DB connection successful"));
+mongoose.connect(DB).then(() => console.log("DB connection successful"));
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
@@ -23,7 +21,7 @@ const server = app.listen(port, () => {
 
 process.on("unhandledRejection", (err) => {
   console.log(err.name, err.message);
-  console.log("UNHANDLED REJECTION!!! Shutting down...");
+  console.log("UNHANDLED REJECTION!!! Shutting down...", err);
   server.close(() => {
     process.exit(1);
   });
